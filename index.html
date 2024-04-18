@@ -417,18 +417,18 @@
                 }
                 const result = await response.json(); // Assuming the response is in JSON format
 
-                setTimeout(() => {
+               // setTimeout(() => {
                     if (result.is_uploaded) {
                         processResponse(result);
                         // alert(result.message); // Show success message
                     } else {
                         alert('Upload failed: ' + result.message); // Show error message
                     }
-                }, 100);
+                //}, 100);
 
             } catch (error) {
                 console.error('Upload failed (catch):', error);
-                setTimeout(() => alert('Upload failed (timeout): ' + error.message), 100);
+                //setTimeout(() => alert('Upload failed (timeout): ' + error.message), 100);
             }
         });
 

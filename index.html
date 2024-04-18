@@ -427,8 +427,8 @@
                 }, 100);
 
             } catch (error) {
-                console.error('Upload failed:', error);
-                setTimeout(() => alert('Upload failed: ' + error.message), 100);
+                console.error('Upload failed (catch):', error);
+                setTimeout(() => alert('Upload failed (timeout): ' + error.message), 100);
             }
         });
 

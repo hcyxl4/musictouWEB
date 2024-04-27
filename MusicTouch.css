@@ -110,10 +110,20 @@ button[type="submit"]:hover {
 #fileHelp {
     font-size: 1.2em;
     font-weight: bold;
-    margin-bottom: 1em;
+    margin-bottom: 0.6em;
     display: block;
     text-align: center;
 }
+
+#fileHelp3 {
+    font-size: 1em;
+    margin-top: 0em;
+    margin-bottom: 1em;
+    color: #666;
+    display: block;
+    text-align: center;
+}
+
 
 #loadingIndicator {
     display: none;

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>MusicTouch</title>
-    <link rel="icon" href="https://i.ibb.co/gR4gnkc/download.png">
+    <link rel="icon" hrefc="https://i.ibb.co/gR4gnkc/download.png">
     <link type="text/css" rel="stylesheet" href="MusicTouch.css" />
 </head>
 
@@ -50,7 +50,6 @@
         <button onclick="downloadSelectedFiles()">Download Selected Files</button>
     </div>
 
-
     <script>
         document.querySelectorAll('.button').forEach(button => {
             button.addEventListener('keydown', function (event) {
@@ -59,7 +58,7 @@
                 }
             });
         });
-        
+
         let selectedFiles = [];
 
         document.getElementById('fileUpload').addEventListener('change', function (e) {
@@ -134,6 +133,7 @@
                 const result = await response.json(); // Assuming the response is in JSON format
 
                 if (result.is_uploaded) {
+                    alert('Converted successfully!');
                     processResponse(result);
                     clearFileList();
                 } else {
@@ -158,28 +158,41 @@
             document.getElementById('loadingOverlay').classList.add('hidden');
         }
 
+        function addCheckboxKeyListeners() {
+            // Get all checkboxes by their common name attribute
+            const checkboxes = document.querySelectorAll('input[name="downloadFiles"]');
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('keydown', function (event) {
+                    // Check if the Enter key is pressed
+                    if (event.key === 'Enter') {
+                        event.preventDefault(); // Prevent default action, if necessary
+                        // Toggle the checkbox state
+                        this.checked = !this.checked;
+                    }
+                });
+            });
+        }
+
         function processResponse(result) {
-            // Get the download section element
             const downloadSection = document.getElementById('downloadSection');
 
             if (result.is_uploaded) {
-                // Construct the file list for download
                 const fileList = document.getElementById('fileDownloadList');
                 fileList.innerHTML = result.output_name.map((fileName, index) => {
-                    console.log(result.output_link[index]);  // Log each file link here
                     return `
-                        <div>
-                            <input type="checkbox" id="file${index}" name="downloadFiles" value="${result.output_link[index]}">
-                            <label for="file${index}">${fileName}</label>
-                        </div>
-                    `;
+                <div>
+                    <input type="checkbox" id="file${index}" name="downloadFiles" value="${result.output_link[index]}">
+                    <label for="file${index}">${fileName}</label>
+                </div>
+            `;
                 }).join('');
 
-                // Show the download section now that files are ready
                 downloadSection.style.display = 'block';
+                addCheckboxKeyListeners(); // Call this function to activate the key listeners
             } else {
-                alert('Upload failed: ' + result.message); // Show error message
-                downloadSection.style.display = 'none'; // Ensure the download section remains hidden if the upload fails
+                alert('Upload failed: ' + result.message);
+                downloadSection.style.display = 'none';
             }
         }
 
@@ -192,14 +205,17 @@
 
         function downloadSelectedFiles() {
             const selectedFiles = document.querySelectorAll('input[name="downloadFiles"]:checked');
-            selectedFiles.forEach(checkbox => {
-                const link = document.createElement('a');
-                link.href = checkbox.value; // Use the Google Drive link here
-                link.download = checkbox.value.split('/').pop(); // Set the filename
-                link.style.display = 'none'; // Hide the link element
-                document.body.appendChild(link);
-                link.click(); // Trigger the download
-                document.body.removeChild(link); // Clean up the temporary link
+
+            selectedFiles.forEach((checkbox, index) => {
+                setTimeout(() => {
+                    const link = document.createElement('a');
+                    link.href = checkbox.value; // Use the Google Drive direct download link
+                    link.download = checkbox.getAttribute('data-filename'); // Optional: Use data attribute to store filename
+                    link.style.display = 'none'; // Hide the link
+                    document.body.appendChild(link);
+                    link.click(); // Trigger the download
+                    document.body.removeChild(link); // Clean up the link after download
+                }, index * 3000); // Delay each download by 1000 ms (1 second)
             });
         }
     </script>

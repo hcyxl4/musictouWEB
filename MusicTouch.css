@@ -1,0 +1,295 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 2em;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+.header h1 {
+    font-size: 2.3em;
+    color: #333;
+}
+
+.project-description {
+    font-size: 1em;
+    margin-top: 0em;
+    color: #666;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 0.5em;
+}
+
+form {
+    background-color: #fff;
+    padding: 2em;
+    border-radius: 0.5em;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the upload area */
+.upload-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed #007bff;
+    padding: 2em;
+    border-radius: 0.5em;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    height: 12em;
+    margin-bottom: 1.2em;
+    color: #747474;
+}
+
+.upload-area:hover {
+    background: #e1f5fe;
+}
+
+/* Focus styles for keyboard users */
+.upload-area:focus-within {
+    outline: none;
+    background: #e1f5fe;
+}
+
+/* Hidden file input styling */
+.upload-area input[type="file"] {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.upload-area p {
+    font-size: 1.2em;
+    text-align: center;
+    width: 100%;
+    /* Ensures the text is centered in the entire container */
+}
+
+/* Submit button styling */
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 0.5em;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 0.5em;
+    cursor: pointer;
+    font-size: 1.2em;
+    margin-top: 1.2em;
+    height: 2.8em;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Accessibility Helper Text */
+#fileHelp {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 1em;
+    display: block;
+    text-align: center;
+}
+
+#loadingIndicator {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+}
+
+#fileList {
+    color: #747474;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625em;
+    /* Adjust as needed for spacing between file entries */
+}
+
+#fileList div {
+    border: 1px solid #ccc;
+    padding: 0.3em 1em 0.3em 0.7em;
+    border-radius: 0.5em;
+    /* Adjust padding as needed */
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+    color: #5d5d5d;
+}
+
+#fileList div:hover {
+    background-color: #ebebeb;
+}
+
+#fileList button {
+    background: none;
+    border: none;
+    color: grey;
+    cursor: pointer;
+    padding: 0;
+    width: 0.7em;
+}
+
+#fileList button:hover {
+    background: none;
+    border: none;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    padding-right: 1px;
+}
+
+.loading-overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    /* Dark background to highlight the overlay */
+    z-index: 1000;
+    text-align: center;
+}
+
+.loading-overlay p {
+    color: #d0cfcf;
+    font-size: 1.5em;
+    text-align: center;
+    /* A lighter shade of grey */
+}
+
+.loader {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    margin: 40px auto;
+}
+
+.dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0.45em;
+    height: 0.45em;
+    background-color: #d0cfcf;
+    border-radius: 50%;
+    transform-origin: -20px;
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.dot {
+    animation-delay: calc(var(--i) * -0.25s);
+}
+
+.loading-overlay.hidden {
+    display: none;
+}
+
+.loading-overlay .loader {
+    margin-bottom: 1em;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Style the download area similar to upload area */
+.download-section {
+    background-color: #fff;
+    padding: 1em;
+    border-radius: 0.5em;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 2em;
+    display: none;
+    /* Keep it hidden until files are ready to download */
+}
+
+.file-download-list {
+    border: 2px dashed #007bff;
+    padding: 0.7em 3em;
+    border-radius: 0.5em;
+    background-color: #f9f9f9;
+    color: #747474;
+    margin-bottom: 1.2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.file-download-list div {
+    width: 100%;
+    margin-bottom: 0.5em;
+    padding: 0.5em;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.5em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file-download-list label {
+    flex-grow: 1;
+    padding-left: 0.5em;
+}
+
+/* Style the select/deselect and download buttons */
+.download-section button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 0.7em 2em;
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+    font-size: 1.2em;
+    margin-top: 1em;
+    width: auto;
+    margin-bottom: 1em;
+    /* Adjust width as necessary */
+}
+
+.download-section button:hover {
+    background-color: #0056b3;
+}

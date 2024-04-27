@@ -51,6 +51,11 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Alert the users that this is a test version and the output is fixed
+            alert('Note: This is a test version of MusicTouch. Regardless of the files you upload, the output file will be a fixed example file.');
+        });
+        
         document.querySelectorAll('.button').forEach(button => {
             button.addEventListener('keydown', function (event) {
                 if (event.key === 'Enter' || event.key === ' ') {

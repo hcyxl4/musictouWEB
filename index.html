@@ -8,7 +8,6 @@
     <link type="text/css" rel="stylesheet" href="MusicTouch.css" />
 </head>
 
-
 <body>
     <div class="header">
         <h1>MusicTouch</h1>
@@ -19,14 +18,14 @@
     </div>
     <form id="uploadForm">
         <span id="fileHelp">Accepted file types: Images, PDF</span>
-        <div class="upload-area" id="drop_zone">
-            <p>Drag and drop your files here or click to select files.</p>
-            <input type="file" id="fileUpload" name="files" aria-describedby="fileHelp" accept="image/*,.pdf" multiple>
+        <div class="upload-area" id="drop_zone" aria-labelledby="fileHelp2">
+            <p id="fileHelp2">Drag and drop your files here or click to select files.</p>
+            <input type="file" id="fileUpload" name="files" aria-describedby="fileHelp2" accept="image/*,.pdf" multiple>
         </div>
         <div id="fileList">No files selected.</div>
         <button type="submit" class="button">Upload</button>
     </form>
-    <div id="loadingOverlay" class="loading-overlay hidden">
+    <div id="loadingOverlay" class="loading-overlay hidden" aria-live="assertive">
         <div class="loader">
             <div class="dot" style="--i:0;"></div>
             <div class="dot" style="--i:1;"></div>
@@ -52,9 +51,12 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Alert the users that this is a test version and the output is fixed
-            alert('Note: This is a test version of MusicTouch. Regardless of the files you upload, the output file will be a fixed example file.');
+        document.querySelectorAll('.button').forEach(button => {
+            button.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    this.click();
+                }
+            });
         });
         
         let selectedFiles = [];
@@ -75,7 +77,10 @@
 
             if (selectedFiles.length > 0) {
                 fileList.innerHTML = selectedFiles.map((file, index) =>
-                    `<div><button onclick="deleteFile(${index})">x</button> <span>${file.name}</span></div>`
+                    `<div>
+                <button aria-label="Delete ${file.name}" onclick="deleteFile(${index})">X</button>
+                <span>${file.name}</span>
+            </div>`
                 ).join('');
             } else {
                 fileList.innerHTML = 'No files selected.';
